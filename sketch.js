@@ -1,6 +1,5 @@
-var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
-var packageBody,ground;
-var Box1,Box2,Box3;
+ var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
+var packageBody,ground
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
@@ -25,53 +24,69 @@ function setup() {
 	helicopterSprite.addImage(helicopterIMG)
 	helicopterSprite.scale=0.6
 
-	groundSprite=createSprite(width/2, height-35, width,10);
-	groundSprite.shapeColor=color(255)
+	ground=createSprite(width/2, height-35, width,10);
+	ground.shapeColor=color(255)
 
 
 	engine = Engine.create();
 	world = engine.world;
 
-	var options = {
-		restitution:0.8
-	}
-	packageBody = Bodies.circle(width/2 , 200 , 5 , options);
+	packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:0.3, isStatic:true});
 	World.add(world, packageBody);
 	
-    var options_ground = {
-		isStatic:true
-	}
+
 	//Create a Ground
-	ground = Bodies.rectangle(width/2, 650, width, 10 , options_ground);
+	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
  	World.add(world, ground);
 
+ 	boxPosition = width/2-100
+ 	box=610;
+
+
+ 	boxleft=createSprite(boxPosition, box, 20,100);
+ 	boxleft.shapeColor=color(255,0,0);
+
+ 	boxLeftBody = Bodies.rectangle(boxPosition+20, box, 20,100 , {isStatic:true} );
+ 	World.add(world, boxLeftBody);
+
+ 	boxBase=createSprite(boxPosition+100, box+40, 200,20);
+ 	boxBase.shapeColor=color(255,0,0);
+	
+	 
+ 	boxBottom = Bodies.rectangle(boxPosition+100, box+45-20, 200,20 , {isStatic:true} );
+ 	World.add(world, boxBottom);
+
+ 	boxleftSprite=createSprite(boxPosition+200 , box, 20,100);
+ 	boxleftSprite.shapeColor=color(255,0,0);
+
+ 	boxRightBody = Bodies.rectangle(boxPosition+200-20 , box, 20,100 , {isStatic:true} );
+ 	World.add(world, boxRightBody);
+
+
 	Engine.run(engine);
-
-	Box1 = new box(340,610,20,100);
-	Box2 = new box(460,610,20,100);
-	Box3 = new box(400,650,100,20);
-
-
+  
 }
 
 
 function draw() {
   rectMode(CENTER);
   background(0);
+ 
   packageSprite.x= packageBody.position.x 
-  packageSprite.y= packageBody.position.y
+  packageSprite.y= packageBody.position.y 
 
-  Box1.display();
-  Box2.display();
-  Box3.display();
-
+  
   drawSprites();
+  
+ 
  
 }
 
 function keyPressed() {
- if (keyCode === DOWN_ARROW) {
-    // Look at the hints in the document and understand how to make the package body fall only on    
   
+   if (keyCode === DOWN_ARROW) {
+    Matter.Body.setStatic(packageBody,false);
+    
   }
+   
 }
